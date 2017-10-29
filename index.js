@@ -1,7 +1,12 @@
 const Telegraf = require('telegraf');
-const dotenv = require('dotenv');
-dotenv.load();
 const util = require("util");
+
+try {
+    const dotenv = require('dotenv');
+    dotenv.load();
+} catch (error) {
+    console.error(error)
+}
 
 const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
 
