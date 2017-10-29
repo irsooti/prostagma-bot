@@ -5,7 +5,7 @@ try {
     const dotenv = require('dotenv');
     dotenv.load();
 } catch (error) {
-    console.error(error)
+    console.log('dotenv can\'t be loaded... SKIPPED');
 }
 
 const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
