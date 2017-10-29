@@ -1,5 +1,6 @@
 const Telegraf = require('telegraf');
 const util = require("util");
+const opbeat = require('opbeat').start()
 
 try {
     const dotenv = require('dotenv');

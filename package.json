@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "node-teamspeak": "^1.0.10",
+    "opbeat": "^4.16.0",
     "telegraf": "^3.14.0"
   },
   "devDependencies": {
