@@ -1,6 +1,5 @@
 const Telegraf = require('telegraf');
 const util = require("util");
-const opbeat = require('opbeat').start()
 
 try {
     const dotenv = require('dotenv');
@@ -10,6 +9,7 @@ try {
 }
 
 const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
+const TrelloConfig = require('./services/trello/trello.controller')();
 
 
 const app = new Telegraf(process.env.BOT_TOKEN)
@@ -24,6 +24,12 @@ app.hears(/prostagma/, (ctx) => {
 
 app.on('sticker', (ctx) => ctx.reply('👍'))
 app.command('/ts', ({ reply }) => TeamspeakConfig.showClients(reply));
+app.command('/suggerisco', (ctx) => {
+    let msg = ctx.message.text.split('/suggerisco')[1];
+    TrelloConfig.postSuggestion(msg, ctx.message.from.username);
+    return ctx.reply('Grazie del suggerimento... CRETINO!')
+});
+
 app.startPolling()
 // const Telegraf = require('telegraf')
 // const { reply } = Telegraf
