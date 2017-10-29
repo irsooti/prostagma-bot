@@ -29,6 +29,7 @@ app.command('/suggerisco', (ctx) => {
     TrelloConfig.postSuggestion(msg, ctx.message.from.username);
     return ctx.reply('Grazie del suggerimento... CRETINO!')
 });
+app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teamspeak.com/invite/7003.ts.swissteamspeak.org/?password=disperati1'))
 
 app.startPolling()
 // const Telegraf = require('telegraf')
