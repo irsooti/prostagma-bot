@@ -1,0 +1,19 @@
+{
+  "name": "prostagma-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniele Irsuti",
+  "license": "ISC",
+  "dependencies": {
+    "node-teamspeak": "^1.0.10",
+    "telegraf": "^3.14.0"
+  },
+  "devDependencies": {
+    "dotenv": "^4.0.0",
+    "ts-node": "^3.3.0"
+  }
+}
