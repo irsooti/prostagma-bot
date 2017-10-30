@@ -11,6 +11,13 @@ try {
 const rollbar = new Rollbar(process.env.ROLLBAR_TOKEN);
 rollbar.log("Server started");
 const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
+let ts3 = TeamspeakConfig.connect();
+
+ts3.on('error', error => {
+    console.log(error, 'On initialize, retrying');
+    ts3 = TeamspeakConfig.connect();
+});
+
 const TrelloConfig = require('./services/trello/trello.controller')();
 
 const app = new Telegraf(process.env.BOT_TOKEN)
@@ -24,8 +31,8 @@ app.hears(/prostagma/, (ctx) => {
     return ctx.reply(`Ciao ${ctx.message.from.username}, sei una faccia di culo!`)
 })
 
-app.on('sticker', (ctx) => ctx.reply('👍'))
-app.command('/ts', ({ reply }) => TeamspeakConfig.showClients(reply));
+// app.on('sticker', (ctx) => ctx.reply('👍'))
+app.command('/ts', ({ reply }) => TeamspeakConfig.showClients(reply, ts3));
 app.command('/suggerisco', (ctx) => {
     let msg = ctx.message.text.split('/suggerisco')[1];
     TrelloConfig.postSuggestion(msg, ctx.message.from.username);
@@ -33,12 +40,4 @@ app.command('/suggerisco', (ctx) => {
 });
 app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teamspeak.com/invite/7003.ts.swissteamspeak.org/?password=disperati1'))
 
-app.startPolling()
-// const Telegraf = require('telegraf')
-// const { reply } = Telegraf
-
-// const bot = new Telegraf(process.env.BOT_TOKEN)
-// bot.command('/oldschool', (ctx) => ctx.reply('Hello'))
-
-// bot.command('/hipster', reply('λ'))
-// bot.startPolling()
+app.startPolling();

@@ -1,24 +1,29 @@
-const TeamSpeakClient = require('node-teamspeak');
+const { Client } = require('teamspeak');
 
 module.exports = () => {
-    const cl = new TeamSpeakClient("containertsn1.swissteamspeak.org", 11014);
+
     const ops = {
         login: ["login", { client_login_name: "danielo", client_login_password: "rmBcyoyG" }],
-        use: ["use", { sid: 1 }],
-        clientlist: ["clientlist", ['away', 'voice', 'times', 'uid', 'groups', 'info', 'icon', 'country']]
+        use: ["use", { sid: "1" }],
+        clientlist: ["clientlist", ['-away', '-voice']]
     };
 
-    let connect = (select, fn) => {
-        return cl.send(ops.login[0], ops.login[1], (err, response, rawResponse) => {
-            return cl.send(ops.use[0], ops.use[1], (err, response, rawResponse) => {
-                return cl.send(select[0], select[1], (err, response, rawResponse) => {
-                    return fn(response)
-                });
-            });
-        });
+    let connect = () => new Client("containertsn1.swissteamspeak.org", 11014);
+
+    let query = (select, fn, ts3) => {
+
+        ts3.authenticate(ops.login[0].client_login_name, ops.login[1].client_login_password)
+            .then(() => ts3.send(ops.use[0], ops.use[1].sid)) //Use virtual server with ID=1
+            .then(() => ts3.send(ops.clientlist[0], ops.clientlist[1]))
+            .then(clients => fn(clients, true))
+            .catch(error => {
+                console.log(error, 'On auth');
+                return fn(null, false);
+            })
     }
 
     return {
-        getClientList: (fn, reply) => connect(ops.clientlist, fn)
+        connect: connect,
+        getClientList: (fn, ts3) => query(ops.clientlist, fn, ts3)
     }
 }
