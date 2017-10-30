@@ -1,6 +1,5 @@
-const Telegraf = require('telegraf');
-// Start the Opbeat agent before any thing else in your app
-var opbeat = require('opbeat').start();
+﻿const Telegraf = require('telegraf');
+const Rollbar = require("rollbar");
 
 try {
     const dotenv = require('dotenv');
@@ -9,13 +8,15 @@ try {
     console.log('dotenv can\'t be loaded... SKIPPED');
 }
 
+const rollbar = new Rollbar(process.env.ROLLBAR_TOKEN);
+rollbar.log("Server started");
 const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
 const TrelloConfig = require('./services/trello/trello.controller')();
 
-
 const app = new Telegraf(process.env.BOT_TOKEN)
 app.command('start', ({ from, reply }) => {
-    console.log('start', from)
+    console.log('start', from);
+    rollbar.log("Has started bot", from);
     return reply('Corvo?!')
 });
 
