@@ -1,5 +1,4 @@
 const Telegraf = require('telegraf');
-const util = require("util");
 
 try {
     const dotenv = require('dotenv');

@@ -9,10 +9,10 @@ module.exports = () => {
     };
 
     let connect = (select, fn) => {
-        cl.send(ops.login[0], ops.login[1], (err, response, rawResponse) => {
-            cl.send(ops.use[0], ops.use[1], (err, response, rawResponse) => {
-                cl.send(select[0], select[1], (err, response, rawResponse) => {
-                    fn(response)
+        return cl.send(ops.login[0], ops.login[1], (err, response, rawResponse) => {
+            return cl.send(ops.use[0], ops.use[1], (err, response, rawResponse) => {
+                return cl.send(select[0], select[1], (err, response, rawResponse) => {
+                    return fn(response)
                 });
             });
         });
