@@ -1,4 +1,6 @@
 const Telegraf = require('telegraf');
+// Start the Opbeat agent before any thing else in your app
+var opbeat = require('opbeat').start();
 
 try {
     const dotenv = require('dotenv');
