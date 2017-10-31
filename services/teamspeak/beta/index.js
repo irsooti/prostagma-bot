@@ -1,28 +1,37 @@
-/* If using Babel, you can of course import it instead */
-const TeamSpeakClient = require('teamspeak-async').TeamSpeakClient
-const client = new TeamSpeakClient(
-    { 
-        host: 'containertsn1.swissteamspeak.org', 
-        port: 11014,
-        user: 'danielo',
-        password: 'rmBcyoyG',
-        server: "1"
-    });
+const Bot = require('cmr1-ts3-bot');
 
-    async function getClientNames(){
-        let clients = await client.send('clientlist')
-        console.log(clients)
-        return clients.map(client => client.client_nickname)
-    }
-    
-    /* Print names of everyone online */
-    getClientNames()
-      .then(names => {
-          console.log(names)
-        names.map(name => console.log(name))
-      })
-    
-    /* Make everyone online hate you */
-    client.send('clientlist').then(clients => {
-      clients.map(user => client.send('clientpoke', {clid:user.clid, msg:`Hello ${user.client_nickname}`}))
-    })
+// Create a new bot with desired configuration (these are the default values)
+const bot = new Bot({
+  sid: 1,
+  name: 'Gurzos',
+  user: 'danielo',
+  pass: 'rmBcyoyG',
+  host: 'containertsn1.swissteamspeak.org',
+  port: 11014,
+  channel: 'Riformatorio',
+  verbose: true
+});
+
+// Initialize the bot (callback is optional)
+bot.init((err) => {
+  if (err) console.log(err) // Something didn't work
+  else console.log('hello')   // The bot is alive!
+});
+
+// Listen for the bot's "ready" event (emitted after succesfull "init")
+bot.on('ready', () => {
+  // Send a message to the TS3 main server chat
+  bot.server.message('Ready for service');
+});
+
+// Listen for the bot's "join" event (the bot will automatically join the channel specified)
+bot.on('join', channel => {
+  // Send a message to the channel that the bot has now joined
+  channel.message('I have joined this channel!');
+});
+
+// Register a command for this bot that can be invoked in the channel chat
+bot.channelCommand('ping', (args, context) => {
+  // When someone says "ping" in the bot's channel, reply to that channel with "pong"
+  bot.channel.message('pong');
+});

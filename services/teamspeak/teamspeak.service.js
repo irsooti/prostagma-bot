@@ -26,6 +26,24 @@ module.exports = () => {
         count++;
         return true;
     }
+    let turnOnClientListener = (fn, ts3) => {
+        let clientListener = false;
+
+        ts3.send('login', 'danielo', 'rmBcyoyG')
+            .then(() => ts3.send('use', 1))
+            .then(() => ts3.send('servernotifyregister', { 'event': 'server' }))
+            .then(() => console.log('Done! Everything went fine'))
+            .catch(err => console.error('An error occured:', err));
+
+        if (!clientListener)
+            ts3.on('cliententerview', data => {
+                console.log(data);
+                let clientListener = true;
+                return fn(data.client_nickname + 'si è connesso su ts');
+            });
+
+
+    }
 
     let getClientList = (select, fn, ts3) => {
         if (noFlood()) {
@@ -33,11 +51,6 @@ module.exports = () => {
             console.log('requesting....')
             ts3.send('login', 'danielo', 'rmBcyoyG')
                 .then(() => ts3.send('use', 1))
-                // .then(() => ts3.send('servernotifyregister', { 'event': 'server' }))
-                // .then(() => console.log('Done! Everything went fine'))
-                // .catch(err => console.error('An error occured:', err));
-                // ts3.on('cliententerview', data =>
-                // console.log(data.client_nickname, 'connected') );
                 .then(() => ts3.send('clientlist', '-voice'))
                 .then((r) => fn(r, true))
                 .catch(err => {
@@ -49,11 +62,9 @@ module.exports = () => {
         else fn(null, false)
     }
 
-    //https://stackoverflow.com/questions/43793351/telegram-bot-with-telegraf-js-send-messages-to-chat
-
     return {
         connect: connect,
-        getClientList: (fn, ts3) => getClientList(ops.clientlist, fn, ts3)
-        
+        getClientList: (fn, ts3) => getClientList(ops.clientlist, fn, ts3),
+        turnOnClientListener: (fn, ts3) => turnOnClientListener(fn, ts3)
     }
 }

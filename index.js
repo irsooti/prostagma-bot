@@ -1,5 +1,4 @@
 ﻿const Telegraf = require('telegraf');
-const Rollbar = require("rollbar");
 
 try {
     const dotenv = require('dotenv');
@@ -8,8 +7,6 @@ try {
     console.log('dotenv can\'t be loaded... SKIPPED');
 }
 
-const rollbar = new Rollbar(process.env.ROLLBAR_TOKEN);
-rollbar.log("Server started");
 const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
 let ts3 = TeamspeakConfig.connect();
 
@@ -18,12 +15,12 @@ ts3.on('error', error => {
     ts3 = TeamspeakConfig.connect();
 });
 
+
 const TrelloConfig = require('./services/trello/trello.controller')();
 
 const app = new Telegraf(process.env.BOT_TOKEN)
 app.command('start', ({ from, reply }) => {
     console.log('start', from);
-    rollbar.log("Has started bot", from);
     return reply('Corvo?!')
 });
 
@@ -38,4 +35,8 @@ app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teams
 app.options = {
     port: process.env.PORT || 5000   
 }
+// app.command('/test', (ctx) => {
+//     return TeamspeakConfig.turnOnClientListener(ctx.reply, ts3);
+// })
+
 app.startPolling();

@@ -12,9 +12,9 @@ module.exports = () => {
                 response.client_nickname.forEach(function (r, i) {
                     if (response.client_type[i] != 1) {
                         str += '👉🏼 ' + response.client_nickname[i] + ' ';
-                        if (response.client_input_muted[i])
+                        if (response.client_input_muted[i] == "1")
                             str += '🙊'
-                        if (response.client_output_muted[i])
+                        if (response.client_output_muted[i] == "1")
                             str += '🙉'
                         str += '\n'
                     }
@@ -36,6 +36,7 @@ module.exports = () => {
 
         return {
             showClients: showClients,
+            turnOnClientListener: service.turnOnClientListener,
             connect: service.connect
         }
     }
