@@ -27,11 +27,7 @@ app.command('start', ({ from, reply }) => {
     return reply('Corvo?!')
 });
 
-app.hears(/prostagma/, (ctx) => {
-    return ctx.reply(`Ciao ${ctx.message.from.username}, sei una faccia di culo!`)
-})
-
-// app.on('sticker', (ctx) => ctx.reply('👍'))
+app.hears(/prostagma/, (ctx) => ctx.reply(`Ciao ${ctx.message.from.username}, sei una faccia di culo!`));
 app.command('/ts', ({ reply }) => TeamspeakConfig.showClients(reply, ts3));
 app.command('/suggerisco', (ctx) => {
     let msg = ctx.message.text.split('/suggerisco')[1];
@@ -39,5 +35,7 @@ app.command('/suggerisco', (ctx) => {
     return ctx.reply('Grazie del suggerimento... CRETINO!')
 });
 app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teamspeak.com/invite/7003.ts.swissteamspeak.org/?password=disperati1'))
-
+app.options = {
+    port: process.env.PORT || 5000   
+}
 app.startPolling();
