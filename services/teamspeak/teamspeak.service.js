@@ -1,4 +1,4 @@
-const { Client } = require('teamspeak');
+const TeamspeakQuery = require('teamspeak-query');
 
 module.exports = () => {
 
@@ -8,22 +8,52 @@ module.exports = () => {
         clientlist: ["clientlist", ['-away', '-voice']]
     };
 
-    let connect = () => new Client("containertsn1.swissteamspeak.org", 11014);
+    let connect = () => new TeamspeakQuery('containertsn1.swissteamspeak.org', 11014);
+    let count = 0;
+    let noFlood = () => {
 
-    let query = (select, fn, ts3) => {
+        if (count == 3) {
+            console.log('Flooding!!!')
+            return false;
+        }
 
-        ts3.authenticate(ops.login[0].client_login_name, ops.login[1].client_login_password)
-            .then(() => ts3.send(ops.use[0], ops.use[1].sid)) //Use virtual server with ID=1
-            .then(() => ts3.send(ops.clientlist[0], ops.clientlist[1]))
-            .then(clients => fn(clients, true))
-            .catch(error => {
-                console.log(error, 'On auth');
-                return fn(null, false);
-            })
+        if (count > 0) {
+            setTimeout(() => {
+                count--
+            }, 40000)
+        }
+
+        count++;
+        return true;
     }
+
+    let getClientList = (select, fn, ts3) => {
+        if (noFlood()) {
+            console.log(count)
+            console.log('requesting....')
+            ts3.send('login', 'danielo', 'rmBcyoyG')
+                .then(() => ts3.send('use', 1))
+                // .then(() => ts3.send('servernotifyregister', { 'event': 'server' }))
+                // .then(() => console.log('Done! Everything went fine'))
+                // .catch(err => console.error('An error occured:', err));
+                // ts3.on('cliententerview', data =>
+                // console.log(data.client_nickname, 'connected') );
+                .then(() => ts3.send('clientlist', '-voice'))
+                .then((r) => fn(r, true))
+                .catch(err => {
+                    console.error('An error occured:', err);
+                    return fn(null, false)
+                });
+        }
+
+        else fn(null, false)
+    }
+
+    //https://stackoverflow.com/questions/43793351/telegram-bot-with-telegraf-js-send-messages-to-chat
 
     return {
         connect: connect,
-        getClientList: (fn, ts3) => query(ops.clientlist, fn, ts3)
+        getClientList: (fn, ts3) => getClientList(ops.clientlist, fn, ts3)
+        
     }
 }

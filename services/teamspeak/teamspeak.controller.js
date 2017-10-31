@@ -9,12 +9,12 @@ module.exports = () => {
             str = "👀 Guardo su Teamspeak... Adesso online ci sono: \n\n";
             
             try {
-                response.forEach(function (r) {
-                    if (r.client_type != 1) {
-                        str += '👉🏼 ' + r.client_nickname + ' ';
-                        if (r.client_input_muted)
+                response.client_nickname.forEach(function (r, i) {
+                    if (response.client_type[i] != 1) {
+                        str += '👉🏼 ' + response.client_nickname[i] + ' ';
+                        if (response.client_input_muted[i])
                             str += '🙊'
-                        if (r.client_output_muted)
+                        if (response.client_output_muted[i])
                             str += '🙉'
                         str += '\n'
                     }
