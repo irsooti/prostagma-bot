@@ -7,12 +7,12 @@ try {
     console.log('dotenv can\'t be loaded... SKIPPED');
 }
 
-const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
+// const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
 let ts3 = TeamspeakConfig.connect();
 
 ts3.on('error', error => {
     console.log(error, 'On initialize, retrying');
-    ts3 = TeamspeakConfig.connect();
+    // ts3 = TeamspeakConfig.connect();
 });
 
 
@@ -25,7 +25,7 @@ app.command('start', ({ from, reply }) => {
 });
 
 app.hears(/prostagma/, (ctx) => ctx.reply(`Ciao ${ctx.message.from.username}, sei una faccia di culo!`));
-app.command('/ts', ({ reply }) => TeamspeakConfig.showClients(reply, ts3));
+// app.command('/ts', ({ reply }) => TeamspeakConfig.showClients(reply, ts3));
 app.command('/suggerisco', (ctx) => {
     let msg = ctx.message.text.split('/suggerisco')[1];
     TrelloConfig.postSuggestion(msg, ctx.message.from.username);
