@@ -32,11 +32,9 @@ app.command('/suggerisco', (ctx) => {
     return ctx.reply('Grazie del suggerimento... CRETINO!')
 });
 app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teamspeak.com/invite/7003.ts.swissteamspeak.org/?password=disperati1'))
-app.options = {
-    port: process.env.PORT || 5000   
-}
+
 // app.command('/test', (ctx) => {
 //     return TeamspeakConfig.turnOnClientListener(ctx.reply, ts3);
 // })
-
+app.startWebhook('/prostagma-dir', null, process.env.PORT)
 app.startPolling();
