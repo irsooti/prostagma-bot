@@ -10,10 +10,10 @@ try {
 // const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
 // let ts3 = TeamspeakConfig.connect();
 
-ts3.on('error', error => {
-    console.log(error, 'On initialize, retrying');
-    // ts3 = TeamspeakConfig.connect();
-});
+// ts3.on('error', error => {
+//     console.log(error, 'On initialize, retrying');
+//     // ts3 = TeamspeakConfig.connect();
+// });
 
 
 const TrelloConfig = require('./services/trello/trello.controller')();
