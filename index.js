@@ -8,7 +8,7 @@ try {
 }
 
 // const TeamspeakConfig = require('./services/teamspeak/teamspeak.controller')();
-let ts3 = TeamspeakConfig.connect();
+// let ts3 = TeamspeakConfig.connect();
 
 ts3.on('error', error => {
     console.log(error, 'On initialize, retrying');
