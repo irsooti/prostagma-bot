@@ -17,6 +17,8 @@ try {
 
 
 const TrelloConfig = require('./services/trello/trello.controller')();
+const RLConfig = require('./services/rocketleague/rocketleague.controller')();
+const rocketLeagueToken = RLConfig.connect(process.env.ROCKET_TOKEN);
 
 const app = new Telegraf(process.env.BOT_TOKEN)
 app.command('start', ({ from, reply }) => {
@@ -36,5 +38,10 @@ app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teams
 // app.command('/test', (ctx) => {
 //     return TeamspeakConfig.turnOnClientListener(ctx.reply, ts3);
 // })
+
+app.command('/test', (ctx) => {
+    let msg = ctx.message.text.split('/test ')[1];
+    RLConfig.showUser(msg, ctx.replyWithPhoto, rocketLeagueToken)
+});
 app.startWebhook('/prostagma-dir', null, process.env.PORT)
 app.startPolling();
