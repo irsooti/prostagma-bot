@@ -1,5 +1,6 @@
 ﻿const Telegraf = require('telegraf');
 
+
 try {
     const dotenv = require('dotenv');
     dotenv.load();
@@ -19,6 +20,9 @@ try {
 const TrelloConfig = require('./services/trello/trello.controller')();
 const RLConfig = require('./services/rocketleague/rocketleague.controller')();
 const rocketLeagueToken = RLConfig.connect(process.env.ROCKET_TOKEN);
+const Database = require('./services/mongo/mongo.controller')();
+
+let dbConnect = Database.connect(process.env.MONGO_HOST, process.env.MONG_DB);
 
 const app = new Telegraf(process.env.BOT_TOKEN)
 app.command('start', ({ from, reply }) => {
@@ -35,13 +39,13 @@ app.command('/suggerisco', (ctx) => {
 });
 app.hears(/link ts/, (ctx) => ctx.reply('Il link Teamspeak: \n\nhttp://www.teamspeak.com/invite/7003.ts.swissteamspeak.org/?password=disperati1'))
 
-// app.command('/test', (ctx) => {
-//     return TeamspeakConfig.turnOnClientListener(ctx.reply, ts3);
-// })
+app.command('/registrami', (ctx) => {
+    Database.addUser(ctx.message.from.id, ctx.message.from.username, ctx.message.from.first_name, ctx.reply, console.log);
+})
 
-app.command('/test', (ctx) => {
+app.command('/rls', (ctx) => {
     let msg = ctx.message.text.split('/test ')[1];
     RLConfig.showUser(msg, ctx.replyWithPhoto, rocketLeagueToken)
 });
-app.startWebhook('/prostagma-dir', null, process.env.PORT)
+
 app.startPolling();
