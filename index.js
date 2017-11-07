@@ -13,6 +13,10 @@ const services = {
     RLConfig: require('./services/rocketleague/rocketleague.controller')(process.env.ROCKET_TOKEN),
     Database: require('./services/mongo/mongo.controller')(process.env.MONGO_HOST, process.env.MONG_DB),
 }
+
+// Startup Database
+services.Database.connect(true);
+
 const app = new Telegraf(process.env.BOT_TOKEN);
 
 const bot = require('./bot/bot')();

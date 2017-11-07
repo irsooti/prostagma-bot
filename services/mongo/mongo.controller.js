@@ -1,8 +1,11 @@
 const service = require('./mongo.service')();
 
-module.exports = () => {
+module.exports = (host, db) => {
+    let connect = (bool) =>
+        service.connect(host, db, bool);
+
     return {
-        connect: service.connect,
+        connect: connect,
         addUser: service.addUser
     }
 }
