@@ -1,6 +1,6 @@
 const service = require('./rocketleague.service')();
 
-module.exports = () => {
+module.exports = (token) => {
 
     let showUser = (fn) => (user) => {
         console.log(user);
@@ -8,7 +8,6 @@ module.exports = () => {
     }
 
     return {
-        connect: service.connect,
-        showUser: (user, fn, connect) => service.getPlayer(user, showUser(fn), connect)
+        showUser: (user, fn) => service.getPlayer(user, showUser(fn), service.connect(token))
     }
 }
