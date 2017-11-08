@@ -15,7 +15,7 @@
     "rls-api": "^1.0.2",
     "teamspeak": "0.0.5",
     "teamspeak-query": "^1.5.4",
-    "telegraf": "^3.14.0"
+    "telegraf": "^3.15.3"
   },
   "devDependencies": {
     "dotenv": "^4.0.0",

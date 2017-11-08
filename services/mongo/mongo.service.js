@@ -29,10 +29,8 @@ module.exports = () => {
     let getUser = (id, fn, telegramMethod) => {
         let query = { telegram_id: id };
         UserModel.findOne(query, (err, doc) => {
-            if (err) console.log(err);
+            if (err || doc == null) console.log(err);
             else fn(doc.steam_id, telegramMethod);
-            console.log(doc.steam_id);
-            
         })
     }
 

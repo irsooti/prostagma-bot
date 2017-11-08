@@ -1,5 +1,6 @@
 ﻿const Telegraf = require('telegraf');
-
+const Extra = require('telegraf/extra');
+const Markup = require('telegraf/markup');
 
 try {
     const dotenv = require('dotenv');
@@ -20,5 +21,5 @@ services.Database.connect(true);
 const app = new Telegraf(process.env.BOT_TOKEN);
 
 const bot = require('./bot/bot')();
-bot.start(app, services);
+bot.start(app, Markup, services);
 

@@ -1,8 +1,14 @@
 module.exports = () => {
-    let start = (app, service) => {
-        app.command('start', ({ from, reply }) => {
-            console.log('start', from);
-            return reply('Corvo?!')
+    let start = (app, Markup, service) => {
+        app.command('start', ({ reply }) => {
+            return reply('Guarda le tue stats', Markup
+                .keyboard([
+                    ['⚽️ Rocket League'], // Row1 with 2 buttons
+                ])
+                .oneTime()
+                .resize()
+                .extra()
+            )
         });
 
         app.hears(/prostagma/, (ctx) => ctx.reply(`Ciao ${ctx.message.from.username}, sei una faccia di culo!`));
@@ -23,7 +29,7 @@ module.exports = () => {
             service.RLConfig.showUser(msg, ctx.replyWithPhoto)
         });
 
-        app.command('/myrls', (ctx) => {
+        app.hears('⚽️ Rocket League', (ctx) => {
             service.Database.getUser(ctx.message.from.id, service.RLConfig.showUser, ctx.replyWithPhoto)
         });
 
