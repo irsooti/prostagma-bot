@@ -23,6 +23,10 @@ module.exports = () => {
             service.RLConfig.showUser(msg, ctx.replyWithPhoto)
         });
 
+        app.command('/myrls', (ctx) => {
+            service.Database.getUser(ctx.message.from.id, service.RLConfig.showUser, ctx.replyWithPhoto)
+        });
+
         app.startPolling();
     }
 

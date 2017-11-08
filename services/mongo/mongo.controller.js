@@ -6,6 +6,7 @@ module.exports = (host, db) => {
 
     return {
         connect: connect,
+        getUser: service.getUser,
         addUser: service.addUser
     }
 }

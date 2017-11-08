@@ -11,6 +11,7 @@ module.exports = () => {
     const UserSchema = new Schema({
         telegram_id: String,
         username: String,
+        steam_id: String,
         first_name: String,
     });
 
@@ -25,6 +26,15 @@ module.exports = () => {
         return mongoose;
     }
 
+    let getUser = (id, fn, telegramMethod) => {
+        let query = { telegram_id: id };
+        UserModel.findOne(query, (err, doc) => {
+            if (err) console.log(err);
+            else fn(doc.steam_id, telegramMethod);
+            console.log(doc.steam_id);
+            
+        })
+    }
 
     let addUser = (telegramId, telegramUser, first_name, fn, errHandler) => {
 
@@ -40,6 +50,7 @@ module.exports = () => {
 
     return {
         connect: connect,
+        getUser: getUser,
         addUser: addUser
     }
 
